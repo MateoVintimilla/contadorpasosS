@@ -1,18 +1,30 @@
+// Masculine Color Palette
+:root {
+  --primary-color: #333D51;   // Dark Slate Gray
+  --secondary-color: #1C2331; // Almost Black Blue
+  --accent-color: #4D5466;    // Muted Gray-Blue
+  --background-color: #0F1A2B; // Deep Navy
+  --text-color: #E0E4E8;      // Light Grayish Blue
+}
+
 .mobile-container {
   width: 100%;
-  max-width: 320px;
-  height: 550px;
-  border: 3px solid #000;
-  border-radius: 25px;
+  max-width: 350px;
+  height: 600px;
+  border-radius: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 25px;
-  background: linear-gradient(135deg, #1a1a1a, #333);
-  box-shadow: 0 8px 15px rgba(255,0,0,0.3);
+  padding: 30px;
   position: relative;
   overflow: hidden;
-  transition: all 0.4s ease;
+  background: linear-gradient(145deg, var(--background-color), var(--secondary-color));
+  box-shadow: 
+    0 15px 30px rgba(0,0,0,0.4),
+    0 0 0 5px rgba(51,61,81,0.1);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  perspective: 1000px;
+  transform-style: preserve-3d;
 }
 
 .mobile-container::before {
@@ -22,138 +34,158 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle at center, 
-    rgba(255,0,0,0.2) 0%, 
-    rgba(0,0,0,0) 70%
+  background: radial-gradient(
+    circle at center, 
+    rgba(51,61,81,0.2) 0%, 
+    transparent 70%
   );
-  animation: pulse-border 3s infinite alternate;
+  animation: rotate-gradient 10s linear infinite;
+  z-index: 1;
 }
 
-@keyframes pulse-border {
-  0% { transform: scale(1); opacity: 0.7; }
-  100% { transform: scale(1.05); opacity: 1; }
+@keyframes rotate-gradient {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.mobile-container:hover {
+  transform: 
+    scale(1.02) 
+    rotateX(5deg) 
+    rotateY(-5deg);
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.5),
+    0 0 0 7px rgba(51,61,81,0.2);
 }
 
 .title {
-  font-size: 20px;
-  margin-bottom: 25px;
+  font-size: 22px;
+  margin-bottom: 30px;
   font-weight: bold;
-  color: #ff0000;
+  color: var(--primary-color);
   text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 2px 2px 4px rgba(255,0,0,0.3);
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px rgba(51,61,81,0.5);
+  position: relative;
+  z-index: 10;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: var(--primary-color);
+    animation: pulse-underline 2s infinite alternate;
+  }
+}
+
+@keyframes pulse-underline {
+  0% { width: 50px; }
+  100% { width: 100px; }
 }
 
 .main-circle {
-  width: 250px;
-  height: 250px;
+  width: 280px;
+  height: 280px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, 
-    #ff0000, 
-    #990000
+  background: conic-gradient(
+    from 45deg, 
+    var(--primary-color), 
+    var(--secondary-color), 
+    var(--primary-color)
   );
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   position: relative;
+  overflow: hidden;
   box-shadow: 
-    0 10px 20px rgba(0,0,0,0.5),
-    inset 0 0 20px rgba(0,0,0,0.3);
-  border: 5px solid #000;
-  transition: all 0.3s ease;
+    0 15px 30px rgba(0,0,0,0.4),
+    inset 0 0 30px rgba(0,0,0,0.3);
+  animation: circle-pulse 3s infinite alternate;
+  transform-style: preserve-3d;
 }
 
-.main-circle:hover {
-  transform: rotate(5deg);
+@keyframes circle-pulse {
+  0% { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1.05) rotate(5deg); }
 }
 
 .inner-circle {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
-  background: linear-gradient(145deg, #ffffff, #e6e6e6);
+  background: linear-gradient(145deg, #1C2537, #121A25);
   display: flex;
   justify-content: center;
   align-items: center;
   box-shadow: 
-    inset 0 5px 10px rgba(0,0,0,0.2),
-    0 5px 10px rgba(0,0,0,0.1);
-  border: 3px solid #000;
+    inset 0 10px 20px rgba(0,0,0,0.3),
+    0 10px 20px rgba(0,0,0,0.2);
+  border: 4px solid var(--primary-color);
   position: relative;
-  overflow: hidden;
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
 }
 
-.inner-circle::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg, 
-    rgba(255,0,0,0.1), 
-    rgba(0,0,0,0.1)
-  );
-  transform: rotate(45deg);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.inner-circle:active::after {
-  opacity: 1;
+.inner-circle:active {
+  transform: scale(0.95) translateZ(-20px);
+  box-shadow: 
+    inset 0 15px 30px rgba(0,0,0,0.5),
+    0 5px 10px rgba(0,0,0,0.3);
 }
 
 .steps-count {
-  font-size: 28px;
+  font-size: 36px;
   font-weight: bold;
-  color: #ff0000;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  color: var(--primary-color);
+  text-shadow: 0 0 15px rgba(51,61,81,0.5);
+  position: relative;
   z-index: 10;
 }
 
 .steps-info, .acceleration-info {
-  margin: 15px 0;
-  font-size: 16px;
-  color: #ff4444;
+  margin: 20px 0;
+  font-size: 18px;
+  color: var(--text-color);
   text-align: center;
-  background-color: rgba(0,0,0,0.6);
-  padding: 10px;
-  border-radius: 15px;
-  transition: all 0.3s ease;
-}
-
-.steps-info:hover, .acceleration-info:hover {
-  transform: scale(1.05);
-  background-color: rgba(255,0,0,0.2);
+  background: rgba(51,61,81,0.1);
+  padding: 15px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 /* Responsive Adjustments */
 @media screen and (max-width: 375px) {
   .mobile-container {
-    width: 95%;
-    max-width: 300px;
-    height: 500px;
-    padding: 20px;
+    max-width: 320px;
+    height: 550px;
+    padding: 25px;
   }
 
   .main-circle {
-    width: 220px;
-    height: 220px;
+    width: 250px;
+    height: 250px;
   }
 
   .inner-circle {
-    width: 130px;
-    height: 130px;
+    width: 180px;
+    height: 180px;
   }
 
   .title {
-    font-size: 18px;
+    font-size: 20px;
   }
 
   .steps-count {
-    font-size: 24px;
+    font-size: 32px;
   }
 }
 
@@ -161,6 +193,5 @@
 @media (hover: hover) {
   .mobile-container:hover {
     cursor: pointer;
-    transform: translateY(-10px);
   }
 }

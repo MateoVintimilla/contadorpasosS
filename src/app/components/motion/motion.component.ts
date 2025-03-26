@@ -14,9 +14,15 @@ export class MotionComponent implements OnInit, OnDestroy {
   motionData: MotionData = {};
   steps: number = 0;
   acceleration: number = 0;
-  private lastAcceleration: number = 0;
-  private threshold: number = 10; // Adjust sensitivity
-  private stepCooldown: number = 0;
+
+  // Parámetros de detección de pasos
+  private lastPeakTime: number = 0;
+  private lastValleyTime: number = 0;
+  private peakAcceleration: number = 0;
+  private valleyAcceleration: number = 0;
+  private stepDetectionThreshold: number = 2; // Ajusta este valor para sensibilidad
+  private stepMinInterval: number = 250; // Mínimo intervalo entre pasos (ms)
+  private stepMaxInterval: number = 2000; // Máximo intervalo entre pasos (ms)
 
   constructor(private motionS: MotionService) {}
 
@@ -30,32 +36,54 @@ export class MotionComponent implements OnInit, OnDestroy {
 
   private startStepCounter() {
     this.motionS.startMotionDetection((data: MotionData) => {
-      this.motionData = data;
-
       if (data.acceleration) {
-        // Calculate total acceleration magnitude
+        // Calcular la magnitud de aceleración total
         const currentAcceleration = Math.sqrt(
           Math.pow(data.acceleration.x || 0, 2) +
           Math.pow(data.acceleration.y || 0, 2) +
           Math.pow(data.acceleration.z || 0, 2)
         );
 
-        // Simple step detection algorithm
-        if (this.stepCooldown > 0) {
-          this.stepCooldown--;
-        }
-
-        // Detect significant change in acceleration
-        const accelerationChange = Math.abs(currentAcceleration - this.lastAcceleration);
-        
-        if (accelerationChange > this.threshold && this.stepCooldown === 0) {
-          this.steps++;
-          this.stepCooldown = 5; // Prevent rapid step counting
-        }
-
+        // Guardar la aceleración actual
         this.acceleration = currentAcceleration;
-        this.lastAcceleration = currentAcceleration;
+
+        // Implementar algoritmo de detección de pasos más avanzado
+        this.detectStep(currentAcceleration);
       }
     });
+  }
+
+  private detectStep(currentAcceleration: number) {
+    const currentTime = Date.now();
+
+    // Detectar picos y valles de aceleración
+    if (currentAcceleration > this.peakAcceleration) {
+      this.peakAcceleration = currentAcceleration;
+      this.lastPeakTime = currentTime;
+    }
+
+    if (currentAcceleration < this.valleyAcceleration) {
+      this.valleyAcceleration = currentAcceleration;
+      this.lastValleyTime = currentTime;
+    }
+
+    // Condiciones para detectar un paso
+    const peakToValleyDiff = this.peakAcceleration - this.valleyAcceleration;
+    const timeBetweenPeakAndValley = this.lastPeakTime - this.lastValleyTime;
+    const timeSinceLastStep = currentTime - (this.lastPeakTime || 0);
+
+    // Criterios de detección de paso
+    if (
+      peakToValleyDiff > this.stepDetectionThreshold && 
+      Math.abs(timeBetweenPeakAndValley) < 500 && // Intervalo corto entre pico y valle
+      timeSinceLastStep > this.stepMinInterval && 
+      timeSinceLastStep < this.stepMaxInterval
+    ) {
+      this.steps++;
+
+      // Resetear para la próxima detección
+      this.peakAcceleration = 0;
+      this.valleyAcceleration = Number.MAX_SAFE_INTEGER;
+    }
   }
 }

@@ -1,10 +1,9 @@
-// Masculine Color Palette
+// Color Variables
 :root {
-  --primary-color: #333D51;   // Dark Slate Gray
-  --secondary-color: #1C2331; // Almost Black Blue
-  --accent-color: #4D5466;    // Muted Gray-Blue
-  --background-color: #0F1A2B; // Deep Navy
-  --text-color: #E0E4E8;      // Light Grayish Blue
+  --primary-color: #ff4444;
+  --secondary-color: #000;
+  --background-color: #121212;
+  --text-color: #ffffff;
 }
 
 .mobile-container {
@@ -18,15 +17,16 @@
   padding: 30px;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(145deg, var(--background-color), var(--secondary-color));
+  background: linear-gradient(145deg, var(--background-color), #1e1e1e);
   box-shadow: 
-    0 15px 30px rgba(0,0,0,0.4),
-    0 0 0 5px rgba(51,61,81,0.1);
+    0 15px 30px rgba(0, 0, 0, 0.932),
+    0 0 0 5px rgba(179, 7, 7, 0.911);
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   perspective: 1000px;
   transform-style: preserve-3d;
 }
 
+// Glowing Background Effect
 .mobile-container::before {
   content: '';
   position: absolute;
@@ -36,7 +36,7 @@
   height: 200%;
   background: radial-gradient(
     circle at center, 
-    rgba(51,61,81,0.2) 0%, 
+    rgba(224, 0, 0, 0.37) 0%, 
     transparent 70%
   );
   animation: rotate-gradient 10s linear infinite;
@@ -54,8 +54,8 @@
     rotateX(5deg) 
     rotateY(-5deg);
   box-shadow: 
-    0 20px 40px rgba(0,0,0,0.5),
-    0 0 0 7px rgba(51,61,81,0.2);
+    0 20px 40px rgba(104, 3, 3, 0.76),
+    0 0 0 7px rgba(175, 46, 46, 0.726);
 }
 
 .title {
@@ -65,7 +65,7 @@
   color: var(--primary-color);
   text-transform: uppercase;
   letter-spacing: 3px;
-  text-shadow: 0 0 10px rgba(51,61,81,0.5);
+  text-shadow: 0 0 10px rgba(241, 71, 71, 0.918);
   position: relative;
   z-index: 10;
   
@@ -119,7 +119,7 @@
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  background: linear-gradient(145deg, #1C2537, #121A25);
+  background: linear-gradient(145deg, #2c2c2c, #1e1e1e);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -143,7 +143,7 @@
   font-size: 36px;
   font-weight: bold;
   color: var(--primary-color);
-  text-shadow: 0 0 15px rgba(51,61,81,0.5);
+  text-shadow: 0 0 15px rgba(255, 68, 68, 0.966);
   position: relative;
   z-index: 10;
 }
@@ -153,13 +153,40 @@
   font-size: 18px;
   color: var(--text-color);
   text-align: center;
-  background: rgba(51,61,81,0.1);
+  background: rgb(255, 68, 68);
   padding: 15px;
   border-radius: 20px;
   backdrop-filter: blur(10px);
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg, 
+      transparent, 
+      rgba(255,255,255,0.1), 
+      transparent
+    );
+    transform: rotate(45deg);
+    animation: shine 3s infinite linear;
+  }
+}
+
+@keyframes shine {
+  0% { transform: rotate(45deg) translateX(-100%); }
+  100% { transform: rotate(45deg) translateX(100%); }
+}
+
+.steps-info:hover, .acceleration-info:hover {
+  transform: scale(1.05);
+  background: rgba(192, 37, 37, 0.897);
 }
 
 /* Responsive Adjustments */

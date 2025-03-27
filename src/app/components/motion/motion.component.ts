@@ -35,9 +35,9 @@ export class MotionComponent implements OnInit, OnDestroy {
       if (data.acceleration) {
         // Calculate total acceleration magnitude
         const currentAcceleration = Math.sqrt(
-          Math.pow(data.acceleration.x || 0, 1) +
-          Math.pow(data.acceleration.y || 0, 1) +
-          Math.pow(data.acceleration.z || 0, 1)
+          Math.pow(data.acceleration.x || 0, 2) +
+          Math.pow(data.acceleration.y || 0, 2) +
+          Math.pow(data.acceleration.z || 0, 2)
         );
 
         // Simple step detection algorithm
